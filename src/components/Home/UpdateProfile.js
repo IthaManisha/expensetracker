@@ -5,6 +5,8 @@ import SendVerificationEmail from "./SendVerificationEmail";
 const UpdateProfile=(props)=>{
     const[fullName,setFullName]=useState('');
     const[profileUrl,setProfileUrl]=useState('');
+    
+    
     const authctx=useContext(AuthContext);
     const nameHandler=(event)=>{
         setFullName(event.target.value)
@@ -12,6 +14,7 @@ const UpdateProfile=(props)=>{
     const profileUrlHandler=(event)=>{
         setProfileUrl(event.target.value)
     }
+
     console.log('token is:',authctx.token)
     useEffect(() => {
         fetchUserProfile(); // Call fetchUserProfile when the component mounts
@@ -55,9 +58,11 @@ const UpdateProfile=(props)=>{
         }).then((response)=>response.json())
             .then((data)=>{
             console.log(data);
+            props.setUpdateProfile(true);
             setFullName('')
             setProfileUrl('')
             //fetchUserProfile()
+            props.onClose()
             
         }).catch((err)=>{
             console.log("Error Message is:",err);

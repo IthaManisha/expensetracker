@@ -1,6 +1,7 @@
 import React,{useState,useContext} from "react";
 import classes from './AuthForm.module.css'
 import AuthContext from "../../store/auth-context";
+import ResetPassword from "../Home/ResetPassword";
 
 const AuthForm=()=>{
     const[isLogin,setIsLogin]=useState(true)
@@ -50,7 +51,7 @@ const AuthForm=()=>{
                })
             }
         }).then((data)=>{
-            authctx.login(data.idToken)
+            authctx.login(data.idToken,email)
         }).catch((err)=>{
             alert(err.mesaage);
         })
@@ -69,6 +70,7 @@ const AuthForm=()=>{
                 <label>Your Password</label>
                 <input type="password" value={password} onChange={passHandler} required />
             </div>
+            <ResetPassword />
             <div className={classes.actions}>
             {!isLoading && <button>{isLogin ? 'Login' : 'Create Account'}</button>}
             {isLoading && <p>is Loading...</p>}
