@@ -1,5 +1,6 @@
 import React,{useState,useContext,useEffect} from "react";
 import AuthContext from "../../store/auth-context";
+import SendVerificationEmail from "./SendVerificationEmail";
 
 const UpdateProfile=(props)=>{
     const[fullName,setFullName]=useState('');
@@ -82,6 +83,7 @@ const UpdateProfile=(props)=>{
             </button>
             </div>
         </form>
+        <SendVerificationEmail />
         </div>
     )
 }
