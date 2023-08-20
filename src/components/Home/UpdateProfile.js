@@ -1,4 +1,4 @@
-import React,{useState,useContext} from "react";
+import React,{useState,useContext,useEffect} from "react";
 import AuthContext from "../../store/auth-context";
 
 const UpdateProfile=(props)=>{
@@ -12,6 +12,31 @@ const UpdateProfile=(props)=>{
         setProfileUrl(event.target.value)
     }
     console.log('token is:',authctx.token)
+    useEffect(() => {
+        fetchUserProfile(); // Call fetchUserProfile when the component mounts
+      }, []);
+    const fetchUserProfile = async () => {
+        try {
+          const response = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyDvG4Y2HNVHecN9A-9isXGEFx63dFHRCD4`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              idToken: authctx.token,
+            }),
+          });
+    
+          const data = await response.json();
+          if (data.users && data.users.length > 0) {
+            const user = data.users[0];
+            setFullName(user.displayName || ''); // Fill the display name if available
+            setProfileUrl(user.photoUrl || ''); // Fill the photo URL if available
+          }
+        } catch (error) {
+          console.error("Error fetching user profile:", error);
+        }
+      };
     const handleSubmit=(event)=>{
         event.preventDefault();
         let Url='https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyDvG4Y2HNVHecN9A-9isXGEFx63dFHRCD4'
@@ -31,7 +56,8 @@ const UpdateProfile=(props)=>{
             console.log(data);
             setFullName('')
             setProfileUrl('')
-            props.onClose();
+            //fetchUserProfile()
+            
         }).catch((err)=>{
             console.log("Error Message is:",err);
         })
