@@ -16,7 +16,7 @@ const ExpenseForm=(props)=>{
         setSelectedCategory(selectedOption);
     };
 
-    const submitHandler=(event)=>{
+    const submitHandler=async(event)=>{
         event.preventDefault()
         const expenseData = {
             id: Math.random().toString(),
@@ -26,6 +26,15 @@ const ExpenseForm=(props)=>{
         };
         console.log(expenseData); 
         props.onSaveData(expenseData)
+        const response=await fetch('https://login-4cf44-default-rtdb.firebaseio.com/expenses.json',{
+            method:'POST',
+            body:JSON.stringify(expenseData),
+            headers:{
+                'Content-Type':'application/jSON'
+            }
+            });
+            const data=await response.json();
+            console.log(data)
         setMoney('')
         setDescription('')
     }
